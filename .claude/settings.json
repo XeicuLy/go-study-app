@@ -1,0 +1,37 @@
+{
+  "permissions": {
+    "deny": ["Bash(git reset:*)", "Bash(git rebase:*)", "Bash(git rm:*)", "Bash(sudo:*)"]
+  },
+  "enabledMcpjsonServers": ["playwright", "context7", "serena"],
+  "enabledPlugins": {
+    "product-planner@xeiculy-plugins": true,
+    "task-planner@xeiculy-plugins": true,
+    "dev-workflow@xeiculy-plugins": true,
+    "create-commit@xeiculy-plugins": true,
+    "stack-pr@xeiculy-plugins": true,
+    "tech-adr@xeiculy-plugins": true,
+    "feature-dev@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {
+    "xeiculy-plugins": {
+      "source": {
+        "source": "github",
+        "repo": "XeicuLy/xeiculy-plugins"
+      },
+      "autoUpdate": true
+    }
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "file=$(jq -r '.tool_input.file_path'); pnpm exec oxfmt --no-error-on-unmatched-pattern \"$file\""
+          }
+        ]
+      }
+    ]
+  }
+}
