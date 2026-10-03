@@ -13,7 +13,7 @@ func TestHealth(t *testing.T) {
 	rec := httptest.NewRecorder()
 	// 3. NewRouter().ServeHTTP(rec, req) でルーター経由で呼び出す
 	//    (Health を直接呼ばないこと。理由はIssue本文の「詰まりやすいポイント」参照)
-	NewRouter().ServeHTTP(rec, req)
+	NewRouter(nil).ServeHTTP(rec, req)
 	// 4. rec.Code が 200 か、rec.Body.String() が "ok" かを確認し、
 	//    違っていたら t.Errorf で報告する
 	if rec.Code != http.StatusOK {
@@ -36,7 +36,7 @@ func TestHealth(t *testing.T) {
 func TestHealthRejectsPost(t *testing.T) {
 	req := httptest.NewRequest(http.MethodPost, "/healthz", nil)
 	rec := httptest.NewRecorder()
-	NewRouter().ServeHTTP(rec, req)
+	NewRouter(nil).ServeHTTP(rec, req)
 	if rec.Code != http.StatusMethodNotAllowed {
 		t.Errorf("status = %d, want %d", rec.Code, http.StatusMethodNotAllowed)
 	}
